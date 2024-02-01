@@ -139,39 +139,39 @@ const registerUser = asyncHandler(async (req, res) => {
 
   console.log('User created:', user);
 
-  // // Génération et sauvegarde de l'OTP
+  // Génération et sauvegarde de l'OTP
   // const generatedOTP = await user.generateOTP();
   // console.log(Generated OTP: ${generatedOTP});
 
-  // const adminUser = await User.findOne({ email: 'contact@talkmail.dz' });
-  // if (!adminUser) {
-  //   return res.status(404).json({ error: 'admin introuvable.' });
-  // }
+  const adminUser = await User.findOne({ email: 'contact@talkmail.dz' });
+  if (!adminUser) {
+    return res.status(404).json({ error: 'admin introuvable.' });
+  }
 
-  // const adminId = adminUser._id;
+  const adminId = adminUser._id;
 
-  // const welcomeMail = new MailModel({
-  //   from: adminUser._id,
-  //   to: user._id,
-  //   subject: 'Bienvenue sur TalkMail',
-  //   message: `
-  //       Bonjour et bienvenue sur notre plateforme !
+  const welcomeMail = new MailModel({
+    from: adminUser._id,
+    to: user._id,
+    subject: 'Bienvenue sur TalkMail',
+    message: `
+        Bonjour et bienvenue sur notre plateforme !
 
-  //       Nous sommes ravis de vous avoir parmi nous. C'est un plaisir de vous accueillir dans notre communauté.
+        Nous sommes ravis de vous avoir parmi nous. C'est un plaisir de vous accueillir dans notre communauté.
 
-  //       Rejoignez-nous sur :
-  //       - LinkedIn: [https://www.linkedin.com/company/isinnovate]
-  //       - Twitter: [https://x.com/isinnovateteam]
-  //       - Instagram: [https://www.instagram.com/isinnovate]
+        Rejoignez-nous sur :
+        - LinkedIn: [https://www.linkedin.com/company/isinnovate]
+        - Twitter: [https://x.com/isinnovateteam]
+        - Instagram: [https://www.instagram.com/isinnovate]
 
-  //       Si vous avez des questions, n'hésitez pas à nous contacter à l'adresse suivante : [contact@talkmail.dz].
+        Si vous avez des questions, n'hésitez pas à nous contacter à l'adresse suivante : [contact@talkmail.dz].
 
-  //       Merci encore de faire partie de notre communauté. Nous sommes impatients de vous offrir une expérience exceptionnelle !
+        Merci encore de faire partie de notre communauté. Nous sommes impatients de vous offrir une expérience exceptionnelle !
 
-  //       Bien cordialement,
-  //       L'équipe ISInnovate.
-  //   `,
-  // });
+        Bien cordialement,
+        L'équipe ISInnovate.
+    `,
+  });
 
   await welcomeMail.save();
   const populatedMail = await MailModel.findById(welcomeMail._id).populate({
@@ -179,11 +179,11 @@ const registerUser = asyncHandler(async (req, res) => {
     select: 'firstname lastname email',
   });
 
-  // await MailBoxModel.findOneAndUpdate(
-  //   { userId: user._id, name: 'Inbox' },
-  //   { $addToSet: { mails: populatedMail } },
-  //   { upsert: true },
-  // );
+  await MailBoxModel.findOneAndUpdate(
+    { userId: user._id, name: 'Inbox' },
+    { $addToSet: { mails: populatedMail } },
+    { upsert: true },
+  );
   // Envoi d'une réponse avec les détails de l'utilisateur et un token d'authentification
   // la c juste pour l'api dans postman sinon on peut renvoyer un message du type inscription reussie
   if (user) {
