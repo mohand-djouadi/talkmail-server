@@ -262,13 +262,10 @@ const replyToEmail = asyncHandler(async (req, res) => {
       from: currentuser._id,
       to: originalMail.from._id,
       subject: `Re: ${originalMail.subject}`,
-      message: `On ${new Date().toLocaleString()}, ${currentuser.firstname} ${
-        currentuser.lastname
-      } wrote:\n${message}\n\nOriginal Message:\nFrom: ${
-        originalMail.from.firstname
-      } ${originalMail.from.lastname}\nSubject: ${originalMail.subject}\n\n${
-        originalMail.message
-      }`,
+      message: `On ${new Date().toLocaleString()}, ${currentuser.firstname} ${currentuser.lastname
+        } wrote:\n${message}\n\nOriginal Message:\nFrom: ${originalMail.from.firstname
+        } ${originalMail.from.lastname}\nSubject: ${originalMail.subject}\n\n${originalMail.message
+        }`,
       attachments: [],
       starred: false,
       bin: false,
