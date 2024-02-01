@@ -11,7 +11,7 @@ const {
   sendOtp,
   toggleTwoFA,
   // verifyOTP,
-} = require('../Controllers/userControllers');
+} = require('../controllers/userControllers');
 const userModel = require('../models/UserModel');
 const { protect } = require('../middlewares/authMiddleware');
 
