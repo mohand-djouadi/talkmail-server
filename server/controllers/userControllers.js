@@ -109,8 +109,7 @@ const registerUser = asyncHandler(async (req, res) => {
     !securityQuestion ||
     !securityAnswer ||
     !secureMail
-  ) 
-  {
+  ) {
     res.status(400);
     throw new Error('Please enter all the fields');
   }
@@ -246,19 +245,19 @@ const authUser = asyncHandler(async (req, res) => {
           });
         } else {
           res.json({
-            user: {
-              _id: user._id,
-              firstname: user.firstname,
-              lastname: user.lastname,
-              dateofbirth: user.dateofbirth,
-              email: user.email,
-              securityAnswer: user.securityAnswer,
-              isResettingPassword: user.isResettingPassword,
-              token: generateToken(user._id),
-              pic: user.pic,
-              secureMail: user.secureMail,
-              twoFA: user.twoFA,
-            },
+
+            _id: user._id,
+            firstname: user.firstname,
+            lastname: user.lastname,
+            dateofbirth: user.dateofbirth,
+            email: user.email,
+            securityAnswer: user.securityAnswer,
+            isResettingPassword: user.isResettingPassword,
+            token: generateToken(user._id),
+            pic: user.pic,
+            secureMail: user.secureMail,
+            twoFA: user.twoFA,
+
           });
         }
       } else {
@@ -280,13 +279,13 @@ const searchUsers = asyncHandler(async (req, res) => {
   try {
     const keyword = req.query.search
       ? {
-          // 'or' pour chercher des docs dans lesquels au moins yiweth de ces conditions est vraie,
-          $or: [
-            { firstname: { $regex: req.query.search, $options: 'i' } },
-            { lastname: { $regex: req.query.search, $options: 'i' } },
-            { email: { $regex: req.query.search, $options: 'i' } },
-          ],
-        }
+        // 'or' pour chercher des docs dans lesquels au moins yiweth de ces conditions est vraie,
+        $or: [
+          { firstname: { $regex: req.query.search, $options: 'i' } },
+          { lastname: { $regex: req.query.search, $options: 'i' } },
+          { email: { $regex: req.query.search, $options: 'i' } },
+        ],
+      }
       : {};
     // Recherche des user en fct de la condition construite et exclut user actuellement connecté...
     const users = await User.find(keyword).find({ _id: { $ne: req.user._id } }); // $ne ma3nas sauf user qui est connecté celui qui a fait la requete c not n sql
