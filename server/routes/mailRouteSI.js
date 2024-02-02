@@ -14,11 +14,6 @@ const { protect } = require('../middlewares/authMiddleware');
 const upload = require('../config/multerConfig');
 
 const router = express.Router();
-const multer = require('multer');
-
-// Configure multer for handling file uploads
-
-// const upload = multer({ dest: 'uploads/' });
 
 // Env mail
 router

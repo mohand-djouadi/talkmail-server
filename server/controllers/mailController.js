@@ -3,6 +3,7 @@ const MailBoxModel = require('../models/MailBoxModel');
 const User = require('../models/UserModel');
 const asyncHandler = require('express-async-handler');
 const path = require('path');
+const fs = require('fs');
 
 const sendEmail = asyncHandler(async (req, res) => {
   const currentuser = req.user;
@@ -32,6 +33,19 @@ const sendEmail = asyncHandler(async (req, res) => {
       bin: false,
     };
 
+    // if (req.files && req.files.length > 0) {
+    //   // Traitement des pièces jointes
+    //   const attachments = req.files.map((file) => {
+    //     return {
+    //       filename: file.filename,
+    //       path: file.path,
+    //     };
+    //   });
+
+    //   // Ajoutez les pièces jointes à la nouvelle instance de courrier
+    //   newMailData.attachments = attachments;
+    // }
+
     if (req.files && req.files.length > 0) {
       // Traitement des pièces jointes
       const attachments = req.files.map((file) => {
@@ -43,6 +57,17 @@ const sendEmail = asyncHandler(async (req, res) => {
 
       // Ajoutez les pièces jointes à la nouvelle instance de courrier
       newMailData.attachments = attachments;
+
+      // Check file existence after saving the mail
+      const attachmentsExist = attachments.every((attachment) => {
+        const filePath = path.resolve(__dirname, 'uploads', attachment.filename);
+        return fs.existsSync(filePath);
+      });
+
+      if (!attachmentsExist) {
+        // Handle the case where at least one attachment is missing
+        return res.status(404).json({ error: 'Attachment not found' });
+      }
     }
 
     // Création de l'instance du nouvel email

@@ -25,7 +25,9 @@ app.get('/', (req, res) => {
   res.send('API is runninggg');
 });
 
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static(path.resolve(__dirname, 'uploads')));
+
 
 app.use('/api/user', userRoutes);
 app.use('/api/chat', chatRoutes);
