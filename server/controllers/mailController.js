@@ -3,7 +3,7 @@ const MailBoxModel = require('../models/MailBoxModel');
 const User = require('../models/UserModel');
 const asyncHandler = require('express-async-handler');
 const path = require('path');
-const fs = require('fs');
+// const fs = require('fs');
 
 const sendEmail = asyncHandler(async (req, res) => {
   const currentuser = req.user;
@@ -12,8 +12,8 @@ const sendEmail = asyncHandler(async (req, res) => {
     const { to, subject, message } = req.body;
 
     const dest = Array.isArray(to) ? to : [to];
-    // console.log('dest :', dest);
-    // console.log({ ...req.body });
+    console.log('dest :', dest);
+    console.log({ ...req.body });
 
     // Verify the existence of the destination users
     const usersTo = await User.find({ email: { $in: dest } });
@@ -33,19 +33,6 @@ const sendEmail = asyncHandler(async (req, res) => {
       bin: false,
     };
 
-    // if (req.files && req.files.length > 0) {
-    //   // Traitement des pièces jointes
-    //   const attachments = req.files.map((file) => {
-    //     return {
-    //       filename: file.filename,
-    //       path: file.path,
-    //     };
-    //   });
-
-    //   // Ajoutez les pièces jointes à la nouvelle instance de courrier
-    //   newMailData.attachments = attachments;
-    // }
-
     if (req.files && req.files.length > 0) {
       // Traitement des pièces jointes
       const attachments = req.files.map((file) => {
@@ -57,22 +44,9 @@ const sendEmail = asyncHandler(async (req, res) => {
 
       // Ajoutez les pièces jointes à la nouvelle instance de courrier
       newMailData.attachments = attachments;
-
-      console.log('Attachments:', attachments);
-
-      
-      const attachmentsExist = attachments.every((attachment) => {
-        const filePath = path.resolve(__dirname, 'uploads', attachment.filename);
-        console.log('Checking file existence for:', filePath);
-        return fs.existsSync(filePath);
-      });
-
-      if (!attachmentsExist) {
-        
-        console.log('One or more attachments not found');
-        return res.status(404).json({ error: 'Attachment not found' });
-      }
     }
+
+   
 
     // Création de l'instance du nouvel email
     const newMail = new MailModel(newMailData);
