@@ -58,14 +58,18 @@ const sendEmail = asyncHandler(async (req, res) => {
       // Ajoutez les pièces jointes à la nouvelle instance de courrier
       newMailData.attachments = attachments;
 
-      // Check file existence after saving the mail
+      console.log('Attachments:', attachments);
+
+      
       const attachmentsExist = attachments.every((attachment) => {
         const filePath = path.resolve(__dirname, 'uploads', attachment.filename);
+        console.log('Checking file existence for:', filePath);
         return fs.existsSync(filePath);
       });
 
       if (!attachmentsExist) {
-        // Handle the case where at least one attachment is missing
+        
+        console.log('One or more attachments not found');
         return res.status(404).json({ error: 'Attachment not found' });
       }
     }
