@@ -10,6 +10,7 @@ const messageRoutes = require('./routes/messageRoutes');
 const mailRouteSI = require('./routes/mailRouteSI');
 const mailBoxRoutes = require('./routes/mailBoxRoutes');
 const EventsRoute = require('./routes/EventsRoute');
+const path = require('path');
 
 const app = express();
 dotenv.config();
@@ -23,6 +24,8 @@ app.use(express.json());
 app.get('/', (req, res) => {
   res.send('API is runninggg');
 });
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use('/api/user', userRoutes);
 app.use('/api/chat', chatRoutes);

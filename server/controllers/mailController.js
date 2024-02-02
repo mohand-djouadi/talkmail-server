@@ -2,7 +2,6 @@ const MailModel = require('../models/MailModel');
 const MailBoxModel = require('../models/MailBoxModel');
 const User = require('../models/UserModel');
 const asyncHandler = require('express-async-handler');
-const multer = require('multer');
 const path = require('path');
 
 const sendEmail = asyncHandler(async (req, res) => {
@@ -12,6 +11,8 @@ const sendEmail = asyncHandler(async (req, res) => {
     const { to, subject, message } = req.body;
 
     const dest = Array.isArray(to) ? to : [to];
+    // console.log('dest :', dest);
+    // console.log({ ...req.body });
 
     // Verify the existence of the destination users
     const usersTo = await User.find({ email: { $in: dest } });
