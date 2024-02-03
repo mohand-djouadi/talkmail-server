@@ -44,6 +44,8 @@ const sendEmail = asyncHandler(async (req, res) => {
 
       // Ajoutez les pièces jointes à la nouvelle instance de courrier
       newMailData.attachments = attachments;
+
+      console.log('Paths of attachments:', attachments.map(file => file.path));
     }
 
    
@@ -364,17 +366,37 @@ const saveDraft = asyncHandler(async (req, res) => {
   res.status(200).json('draft saved successfully');
 });
 
-const download = asyncHandler(async (req, res) => {
-  const filename = req.params.filename;
-  // const filePath = path.join(`server/config/uploads`, filename);
-  const filePath = path.join(__dirname, 'server/config/uploads', filename);
+// const download = asyncHandler(async (req, res) => {
+//   const filename = req.params.filename;
+//   // const filePath = path.join(`server/config/uploads`, filename);
+//   const filePath = path.join(__dirname, 'server/config/uploads', filename);
 
-  res.download(filePath, (err) => {
-    if (err) {
-      console.error('Error downloading file:', err);
-      res.status(500).json({ error: 'Internal Server Error' });
-    }
-  });
+//   res.download(filePath, (err) => {
+//     if (err) {
+//       console.error('Error downloading file:', err);
+//       res.status(500).json({ error: 'Internal Server Error' });
+//     }
+//   });
+// });
+
+const download = asyncHandler(async (req, res) => {
+  try {
+    const filename = req.params.filename;
+    const filePath = path.join(__dirname, 'server/config/uploads', filename);
+
+    // Log du chemin du fichier téléchargé
+    console.log('Downloaded file path:', filePath);
+
+    res.download(filePath, (err) => {
+      if (err) {
+        console.error('Error downloading file:', err);
+        res.status(500).json({ error: 'Internal Server Error' });
+      }
+    });
+  } catch (error) {
+    console.error('Error in download function:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
 });
 
 module.exports = {
