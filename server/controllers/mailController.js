@@ -382,7 +382,8 @@ const saveDraft = asyncHandler(async (req, res) => {
 const download = asyncHandler(async (req, res) => {
   try {
     const filename = req.params.filename;
-    const filePath = path.join(__dirname, 'server/config/uploads', filename);
+    // const filePath = path.join(__dirname, 'server/config/uploads', filename);
+    const filePath = path.join(`server/config/uploads`, filename);
 
     // Log du chemin du fichier téléchargé
     console.log('Downloaded file path:', filePath);
