@@ -366,8 +366,8 @@ const saveDraft = asyncHandler(async (req, res) => {
 
 const download = asyncHandler(async (req, res) => {
   const filename = req.params.filename;
-  const filePath = path.join(`server/config/uploads`, filename);
-  // const filePath = path.join(__dirname, 'uploads', filename);
+  // const filePath = path.join(`server/config/uploads`, filename);
+  const filePath = path.join(__dirname, 'server/config/uploads', filename);
 
   res.download(filePath, (err) => {
     if (err) {
