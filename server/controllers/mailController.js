@@ -3,7 +3,7 @@ const MailBoxModel = require('../models/MailBoxModel');
 const User = require('../models/UserModel');
 const asyncHandler = require('express-async-handler');
 const path = require('path');
-// const fs = require('fs');
+const fs = require('fs');
 
 const sendEmail = asyncHandler(async (req, res) => {
   const currentuser = req.user;
