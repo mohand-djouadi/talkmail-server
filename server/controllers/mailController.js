@@ -384,7 +384,8 @@ const download = asyncHandler(async (req, res) => {
     const filename = req.params.filename;
     // const filePath = path.join(__dirname, 'uploads', filename);
     // const filePath = path.resolve(`config/uploads`, filename);
-    const filePath = path.join(__dirname, 'config/uploads', filename);
+    // const filePath = path.join(__dirname, 'config/uploads', filename);
+    const filePath = path.join(__dirname, '../config/uploads', filename);
     console.log('dirname',  __dirname);
 
     // Log du chemin du fichier téléchargé
