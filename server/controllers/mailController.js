@@ -379,24 +379,55 @@ const saveDraft = asyncHandler(async (req, res) => {
 //   });
 // });
 
+// const download = asyncHandler(async (req, res) => {
+//   try {
+//     const filename = req.params.filename;
+//     // const filePath = path.join(__dirname, 'uploads', filename);
+//     // const filePath = path.resolve(`config/uploads`, filename);
+//     // const filePath = path.join(__dirname, 'config/uploads', filename);
+//     const filePath = path.join(__dirname, '../config/uploads', filename);
+//     console.log('dirname',  __dirname);
+
+//     // Log du chemin du fichier téléchargé
+//     console.log('Downloaded file path:', filePath);
+
+//     res.download(filePath, (err) => {
+//       if (err) {
+//         console.error('Error downloading file:', err);
+//         res.status(500).json({ error: 'Internal Server Error' });
+//       }
+//     });
+//   } catch (error) {
+//     console.error('Error in download function:', error);
+//     res.status(500).json({ error: 'Internal Server Error' });
+//   }
+// });
+
 const download = asyncHandler(async (req, res) => {
   try {
     const filename = req.params.filename;
-    // const filePath = path.join(__dirname, 'uploads', filename);
-    // const filePath = path.resolve(`config/uploads`, filename);
-    // const filePath = path.join(__dirname, 'config/uploads', filename);
-    const filePath = path.join(__dirname, '../config/uploads', filename);
+    // Utiliser path.resolve pour obtenir le chemin absolu du fichier
+    const filePath = path.resolve('config/uploads', filename);
     console.log('dirname',  __dirname);
 
     // Log du chemin du fichier téléchargé
     console.log('Downloaded file path:', filePath);
 
-    res.download(filePath, (err) => {
-      if (err) {
-        console.error('Error downloading file:', err);
-        res.status(500).json({ error: 'Internal Server Error' });
-      }
-    });
+    // Vérifier si le fichier existe
+    if (fs.existsSync(filePath)) {
+      // Utiliser path.basename pour obtenir le nom du fichier sans le chemin
+      const fileBaseName = path.basename(filePath);
+      // Personnaliser le nom du fichier téléchargé par le client
+      res.download(filePath, fileBaseName, (err) => {
+        if (err) {
+          console.error('Error downloading file:', err);
+          res.status(500).json({ error: 'Internal Server Error' });
+        }
+      });
+    } else {
+      // Renvoyer une erreur 404 si le fichier est introuvable
+      res.status(404).json({ error: 'File Not Found' });
+    }
   } catch (error) {
     console.error('Error in download function:', error);
     res.status(500).json({ error: 'Internal Server Error' });
