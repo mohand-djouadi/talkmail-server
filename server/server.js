@@ -15,7 +15,13 @@ const path = require('path');
 const app = express();
 dotenv.config();
 connectDB();
-app.use(cors());
+
+const corsOptions = {
+  origin: 'https://talkmail-web.vercel.app/', // Remplace par l'URL que tu veux autoriser
+  credentials: true, // Si tu utilises des cookies ou des headers d'authentification
+};
+
+app.use(cors(corsOptions));
 
 const PORT = process.env.PORT || 4001;
 
@@ -25,8 +31,6 @@ app.get('/', (req, res) => {
   res.send('API is runninggg');
 });
 
-// app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-// app.use('/uploads', express.static(path.resolve(__dirname, 'uploads')));
 app.use('/uploads', express.static(path.resolve(__dirname, 'server/config/uploads')));
 
 
@@ -35,7 +39,6 @@ app.use('/api/user', userRoutes);
 app.use('/api/chat', chatRoutes);
 // creer une api pour l'envoi des messages
 app.use('/api/message', messageRoutes);
-//app.use('/api', mailRoutes);
 app.use('/api/mail', mailRouteSI);
 app.use('/api/retrieve', mailBoxRoutes);
 app.use('/api/agenda', EventsRoute);
