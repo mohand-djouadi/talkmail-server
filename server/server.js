@@ -46,7 +46,7 @@ app.use('/api/agenda', EventsRoute);
 app.use(notFound);
 app.use(errorHandler);
 
-const server = app.listen(PORT, console.log(`Server started at ${PORT}`));
+const server = app.listen(PORT, "0.0.0.0", console.log(`Server started at ${PORT}`));
 
 const io = require('socket.io')(server, {
   pingTimeout: 60000,
