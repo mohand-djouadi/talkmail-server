@@ -17,7 +17,7 @@ dotenv.config();
 connectDB();
 
 const corsOptions = {
-  origin: 'https://talkmail-web.vercel.app/', // Remplace par l'URL que tu veux autoriser
+  origin: '*', // Remplace par l'URL que tu veux autoriser
   credentials: true, // Si tu utilises des cookies ou des headers d'authentification
 };
 
